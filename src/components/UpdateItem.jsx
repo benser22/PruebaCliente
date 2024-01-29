@@ -9,7 +9,7 @@ const UpdateItem = ({ id }) => {
     const newName = prompt("Nuevo nombre:");
 
     if (newName === null) {
-      return;
+      return "";
     } else if (newName.trim() !== "") {
       updateItem(id, newName);
     } else {
