@@ -8,7 +8,7 @@ const UpdateItem = ({ id }) => {
   const handleUpdateItem = () => {
     const newName = prompt("Nuevo nombre:");
 
-    if (newName !== null) {
+    if (newName === null) {
       return;
     } else if (newName.trim() !== "") {
       updateItem(id, newName);
