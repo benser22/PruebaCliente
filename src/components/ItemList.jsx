@@ -7,7 +7,22 @@ import useStore from "../store";
 const ItemList = ({ items }) => {
   const updateItem = useStore((state) => state.updateItem);
   const deleteItem = useStore((state) => state.deleteItem);
-  console.log(items);
+
+  React.useEffect(() => {
+    fetchData()
+      .then((data) => {
+        setItems(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener datos:", error);
+        setLoading(false);
+      });
+  }, []);
+  
+  if (loading) {
+    return <Typography>Cargando...</Typography>;
+  }
 
   return (
     <Box sx={{ margin: "auto", marginTop: "1rem", maxWidth: 400 }}>
