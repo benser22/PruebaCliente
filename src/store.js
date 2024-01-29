@@ -5,7 +5,7 @@ const port = 3001;
 const cors = require("cors");
 
 app.use(cors());
-const URL = "/http://pruebaserver-production.up.railway.app"; // Cambiado el valor de URL
+const URL = "http://pruebaserver-production.up.railway.app"; // Cambiado el valor de URL
 
 let items = [
   { id: 1, name: "Item 1" },
