@@ -7,8 +7,11 @@ const UpdateItem = ({ id }) => {
 
   const handleUpdateItem = () => {
     const newName = prompt("Nuevo nombre:");
-    if (newName !== null) {
+
+    if (newName !== null && newName.trim() !== "") {
       updateItem(id, newName);
+    } else {
+      alert("El nuevo nombre no puede estar vacío.");
     }
   };
 
