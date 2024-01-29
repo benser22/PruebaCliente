@@ -1,45 +1,60 @@
-import { create } from 'zustand';
-import axios from 'axios';
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+const port = 3001;
+const cors = require("cors");
 
-// Coloca aquí la URL completa del servidor
-const serverURL = 'http://pruebaserver-production.up.railway.app';
+app.use(cors());
+const URL = "/http://pruebaserver-production.up.railway.app"; // Cambiado el valor de URL
 
-const useStore = create((set) => ({
-  items: [],
-  fetchItems: async () => {
-    try {
-      const response = await axios.get(`${serverURL}/api/items`);
-      set({ items: response.data });
-    } catch (error) {
-      console.error('Error al obtener elementos:', error);
-    }
-  },
-  addItem: async (newItem) => {
-    try {
-      const response = await axios.post(`${serverURL}/api/items`, { name: newItem });
-      set((state) => ({ items: [...state.items, response.data] }));
-    } catch (error) {
-      console.error('Error al agregar elemento:', error);
-    }
-  },
-  updateItem: async (id, newName) => {
-    try {
-      const response = await axios.put(`${serverURL}/api/items/${id}`, { name: newName });
-      set((state) => ({
-        items: state.items.map((item) => (item.id === id ? { ...item, name: response.data.name } : item)),
-      }));
-    } catch (error) {
-      console.error('Error al actualizar elemento:', error);
-    }
-  },
-  deleteItem: async (id) => {
-    try {
-      await axios.delete(`${serverURL}/api/items/${id}`);
-      set((state) => ({ items: state.items.filter((item) => item.id !== id) }));
-    } catch (error) {
-      console.error('Error al eliminar elemento:', error);
-    }
-  },
-}));
+let items = [
+  { id: 1, name: "Item 1" },
+  { id: 2, name: "Item 2" },
+];
 
-export default useStore;
+app.use(bodyParser.json());
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Error interno del servidor");
+});
+
+// Obtener todos los elementos
+app.get(`${URL}/items`, (req, res) => {
+  res.json(items);
+});
+
+// Agregar un elemento nuevo
+app.post(`${URL}/items`, (req, res) => {
+  const newItem = req.body;
+  // Busco el último id para asignar uno nuevo al elemento que agrego
+  const lastItemId = items.length > 0 ? items[items.length - 1].id : 0;
+  newItem.id = lastItemId + 1;
+  items.push(newItem);
+  res.json(newItem);
+});
+
+// Actualizar un elemento existente
+app.put(`${URL}/items/:id`, (req, res) => {
+  const itemId = parseInt(req.params.id);
+  const updatedItem = req.body;
+  items = items.map((item) =>
+    item.id === itemId ? { ...item, ...updatedItem } : item
+  );
+  res.json(updatedItem);
+});
+
+// Eliminar un elemento
+app.delete(`${URL}/items/:id`, (req, res) => {
+  const itemId = parseInt(req.params.id);
+  const itemToRemove = items.find((item) => item.id === itemId);
+  if (!itemToRemove) {
+    return res.status(404).json({ message: "Elemento no encontrado" });
+  }
+  items = items.filter((item) => item.id !== itemId);
+  res.json({ message: "Item eliminado" });
+});
+
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
