@@ -27,7 +27,7 @@ const ItemList = () => {
     };
 
     fetchData();
-  }, []);
+  }, [items]);
 
   if (loading) {
     return <Typography>Cargando...</Typography>;
