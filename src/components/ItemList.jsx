@@ -7,6 +7,7 @@ import useStore from "../store";
 const ItemList = ({ items }) => {
   const updateItem = useStore((state) => state.updateItem);
   const deleteItem = useStore((state) => state.deleteItem);
+  console.log(items);
 
   return (
     <Box sx={{ margin: "auto", marginTop: "1rem", maxWidth: 400 }}>
