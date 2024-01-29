@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { List, ListItem, Typography, Box } from "@mui/material";
+import axios from "axios";
 import UpdateItem from "./UpdateItem";
 import DeleteItem from "./DeleteItem";
 import useStore from "../store";
@@ -12,12 +13,10 @@ const ItemList = () => {
   const deleteItem = useStore((state) => state.deleteItem);
 
   useEffect(() => {
-    // Lógica para obtener los datos
     const fetchData = async () => {
       try {
-        const response = await fetch("tu_url_de_api");
-        const data = await response.json();
-        setItems(data);
+        const response = await axios.get("https://nodejs-production-249a.up.railway.app/");
+        setItems(response.data);
       } catch (error) {
         console.error("Error al obtener datos:", error);
       } finally {
