@@ -45,6 +45,7 @@ const ItemList = () => {
                 fontFamily: "Arial, sans-serif",
                 color: "#001f3f",
                 minWidth: "20rem",
+                marginX:"-4rem"
               }}
             >
               🧷{item.name}
