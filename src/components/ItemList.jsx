@@ -12,10 +12,12 @@ const ItemList = () => {
   const updateItem = useStore((state) => state.updateItem);
   const deleteItem = useStore((state) => state.deleteItem);
 
+  const URL_BASE = "https://nodejs-production-249a.up.railway.app"
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://nodejs-production-249a.up.railway.app/");
+        const response = await axios.get(URL_BASE + "/api/items");
         setItems(response.data);
       } catch (error) {
         console.error("Error al obtener datos:", error);

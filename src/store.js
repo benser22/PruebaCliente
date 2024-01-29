@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
+const URL_BASE = "https://nodejs-production-249a.up.railway.app"
+
 const useStore = create((set) => ({
   items: [],
   fetchItems: async () => {
     try {
-      const response = await axios.get('nodejs-production-249a.up.railway.app/api/items');
+      const response = await axios.get(`${URL_BASE}/api/items`);
       set({ items: response.data });
     } catch (error) {
       console.error('Error al obtener elementos:', error);
@@ -13,7 +15,7 @@ const useStore = create((set) => ({
   },
   addItem: async (newItem) => {
     try {
-      const response = await axios.post('nodejs-production-249a.up.railway.app/api/items', { name: newItem });
+      const response = await axios.post(`${URL_BASE}/api/items`, { name: newItem });
       set((state) => ({ items: [...state.items, response.data] }));
     } catch (error) {
       console.error('Error al agregar elemento:', error);
@@ -21,7 +23,7 @@ const useStore = create((set) => ({
   },
   updateItem: async (id, newName) => {
     try {
-      const response = await axios.put(`nodejs-production-249a.up.railway.app/api/items/${id}`, { name: newName });
+      const response = await axios.put(`${URL_BASE}/api/items/${id}`, { name: newName });
       set((state) => ({
         items: state.items.map((item) => (item.id === id ? { ...item, name: response.data.name } : item)),
       }));
@@ -31,7 +33,7 @@ const useStore = create((set) => ({
   },
   deleteItem: async (id) => {
     try {
-      await axios.delete(`nodejs-production-249a.up.railway.app/api/items/${id}`);
+      await axios.delete(`${URL_BASE}/api/items/${id}`);
       set((state) => ({ items: state.items.filter((item) => item.id !== id) }));
     } catch (error) {
       console.error('Error al eliminar elemento:', error);
