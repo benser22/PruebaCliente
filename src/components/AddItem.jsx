@@ -7,6 +7,11 @@ const AddItem = () => {
   const addItem = useStore((state) => state.addItem);
 
   const handleAddItem = () => {
+    if (newItem.trim() === '') {
+      window.alert('El nuevo item no puede estar vacío.');
+      return;
+    }
+
     addItem(newItem);
     setNewItem('');
   };
@@ -20,7 +25,13 @@ const AddItem = () => {
         value={newItem}
         onChange={(e) => setNewItem(e.target.value)}
       />
-      <Button variant="contained" color="primary" style={{marginLeft:"1rem"}} onClick={handleAddItem} title="Agregar un nuevo elemento">
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ marginLeft: '1rem' }}
+        onClick={handleAddItem}
+        title="Agregar un nuevo elemento"
+      >
         Agregar
       </Button>
     </div>
